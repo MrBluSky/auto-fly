@@ -29,9 +29,11 @@ function HttpServer(options){
 
   this.server = express();
   this.server.use(express.static(this.root));
-  this.server.use(proxy('/api', {
-    target: this.proxy
-  }));
+  if(this.proxy){
+    this.server.use(proxy('/api', {
+      target: this.proxy
+    }));
+  }
 }
 
 HttpServer.prototype.listen = function () {
