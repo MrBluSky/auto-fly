@@ -1,6 +1,6 @@
 {
   "name": "auto-fly",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "功能： 提供前端自动化环境，集脚手架，服务器，代理，测试抓包，性能可视化分析于一体，提高开发效率",
   "main": "index.js",
   "bin": {
@@ -24,7 +24,9 @@
     "chalk": "^2.4.2",
     "corser": "^2.0.1",
     "ecstatic": "^4.1.2",
+    "express": "^4.17.1",
     "http-proxy": "^1.17.0",
+    "http-proxy-middleware": "^0.19.1",
     "opener": "^1.5.1",
     "optimist": "^0.6.1",
     "portfinder": "^1.0.20",

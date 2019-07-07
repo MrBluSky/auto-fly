@@ -16,7 +16,7 @@ const { Logger } = utils;
 
 if (argv.h || argv.help) {
   console.log([
-    'usage: http-server [path] [options]',
+    'usage: auto-fly [path] [options]',
     '',
     'options:',
     '  -p           Port to use [8080]',
@@ -27,7 +27,7 @@ if (argv.h || argv.help) {
     '  --cors[=headers]   Enable CORS via the "Access-Control-Allow-Origin" header',
     '                     Optionally provide CORS headers list separated by commas',
     '  -o [path]    Open browser window after starting the server',
-    '  -P --proxy   Fallback proxy if the request cannot be resolved. e.g.: http://someurl.com',
+    '  -P --proxy   Fallback proxy if the request cannot be resolved. e.g.: http://testurl.com',
     '  -h --help    Print this list and exit.'
   ].join('\n'));
   process.exit();
@@ -72,26 +72,26 @@ function listen(port) {
   server.listen(port, host, function () {
     var canonicalHost = host === '0.0.0.0' ? '127.0.0.1' : host,
         protocol      = 'http://';
-    logger.info([chalk.yellow('Starting up http-server, serving '),
-      chalk.cyan(server.root),
+    logger.info([chalk.yellow('Starting up auto-fly, serving '),
+      chalk.green(server.root),
       chalk.yellow('\nAvailable on:')
     ].join(''));
 
     if (argv.a && host !== '0.0.0.0') {
-      logger.info(('  ' + protocol + canonicalHost + ':' + chalk.green(port.toString())));
+      logger.info(`${protocol}${canonicalHost}${chalk.green(port.toString())}`);
     }
     else {
       Object.keys(ifaces).forEach(function (dev) {
         ifaces[dev].forEach(function (details) {
           if (details.family === 'IPv4') {
-            logger.info(('  ' + protocol + details.address + ':' + chalk.green(port.toString())));
+            logger.info(` ${protocol}${details.address}:${chalk.green(port.toString())}`);
           }
         });
       });
     }
 
     if (typeof proxy === 'string') {
-      logger.info('Unhandled requests will be served from: ' + proxy);
+      logger.info(`${chalk.yellow('/proxy/api/url')} requests will be served from: ${chalk.green(proxy)}`);
     }
 
     logger.info('Hit CTRL-C to stop the server');
