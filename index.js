@@ -7,12 +7,14 @@ var os         = require('os'),
     opener     = require('opener'),
     argv       = require('optimist')
       .boolean('cors')
-      .argv;
+      .argv,
+    utils = require('./utils'),
+    chalk = require('chalk'),
+    packages = require('./package.json');
 
 var ifaces = os.networkInterfaces();
-const utils = require('./utils');
-const chalk = require('chalk');
 const { Logger } = utils;
+const { version } = packages;
 
 if (argv.h || argv.help) {
   console.log([
@@ -30,6 +32,11 @@ if (argv.h || argv.help) {
     '  -P --proxy   Fallback proxy if the request cannot be resolved. e.g.: http://testurl.com',
     '  -h --help    Print this list and exit.'
   ].join('\n'));
+  process.exit();
+}
+
+if (argv.v || argv.version) {
+  console.log(`auto-fly: ${version}`);
   process.exit();
 }
 
