@@ -2,60 +2,23 @@
 
 'use strict';
 const os         = require('os'),
-    httpServer = require('./server'),
+    httpServer = require('../server'),
     portfinder = require('portfinder'),
     opener     = require('opener'),
-    argv       = require('optimist')
-      .boolean('cors')
-      .argv,
-    utils = require('./utils'),
+    commander = require('commander'),
+    utils = require('../utils'),
     chalk = require('chalk'),
-    packages = require('./package.json');
+    packages = require('../package.json');
     
 const ifaces = os.networkInterfaces();
 const { Logger } = utils;
 const { version } = packages;
+const port = commander.port || parseInt(process.env.PORT, 10),
+    host = '0.0.0.0',
+    proxy = commander.proxy;
+let logger;
 
-const simpleLogo = `
-               _                    __  _
-              | |                  / _|| |       
-  __ _  _   _ | |_   ___   ______ | |_ | | _   _ 
- / _  || | | || __| / _ \\ |______||  _|| || | | |
-| (_| || |_| || |_ | (_) |        | |  | || |_| |
- \\__,_| \\__,_| \\__| \\___/         |_|  |_| \\__, |
-                                            __/ |
-                                           |___/ `;
-Logger.info(chalk.green(simpleLogo));
-if (argv.h || argv.help) {
-  console.log([
-    'usage: auto-fly [path] [options]',
-    '',
-    'options:',
-    '  -p           Port to use [8080]',
-    '  -a           Address to use [0.0.0.0]',
-    '  -d           Show directory listings [true]',
-    '  -g --gzip    Serve gzip files when possible [false]',
-    '  -debug --debug  Suppress log messages from output',
-    '  --cors[=headers]   Enable CORS via the "Access-Control-Allow-Origin" header',
-    '                     Optionally provide CORS headers list separated by commas',
-    '  -o [path]    Open browser window after starting the server',
-    '  -P --proxy   Fallback proxy if the request cannot be resolved. e.g.: http://testurl.com',
-    '  -h --help    Print this list and exit.'
-  ].join('\n'));
-  process.exit();
-}
-
-if (argv.v || argv.version) {
-  console.log(`auto-fly: ${version}`);
-  process.exit();
-}
-
-var port = argv.p || parseInt(process.env.PORT, 10),
-    host = argv.a || '0.0.0.0',
-    proxy = argv.P || argv.proxy,
-    logger;
-
-if (argv.debug) {
+if (commander.debug) {
   logger = {
     info: function () {},
     request: function () {}
@@ -77,11 +40,11 @@ else {
 
 function listen(port) {
   var options = {
-    root: argv._[0],
-    showDir: argv.d,
+    root: '',
+    showDir: '',
     logFn: logger.request,
     proxy: proxy,
-    showDotfiles: argv.dotfiles
+    showDotfiles: ''
   };
 
   var server = httpServer.createServer(options);
@@ -94,7 +57,7 @@ function listen(port) {
       chalk.yellow('\nAvailable on:')
     ].join(''));
 
-    if (argv.a && host !== '0.0.0.0') {
+    if (commander.a && host !== '0.0.0.0') {
       logger.info(`${protocol}${canonicalHost}${chalk.green(port.toString())}`);
     }
     else {
@@ -112,7 +75,7 @@ function listen(port) {
     }
 
     logger.info('Hit CTRL-C to stop the server');
-    if (argv.o) {
+    if (commander.o) {
       opener(
         protocol + canonicalHost + ':' + port,
         { command: argv.o !== true ? argv.o : null }
