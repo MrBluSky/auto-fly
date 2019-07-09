@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 'use strict';
-var os         = require('os'),
+const os         = require('os'),
     httpServer = require('./server'),
     portfinder = require('portfinder'),
     opener     = require('opener'),
@@ -11,11 +11,21 @@ var os         = require('os'),
     utils = require('./utils'),
     chalk = require('chalk'),
     packages = require('./package.json');
-
-var ifaces = os.networkInterfaces();
+    
+const ifaces = os.networkInterfaces();
 const { Logger } = utils;
 const { version } = packages;
 
+const simpleLogo = `
+               _                    __  _
+              | |                  / _|| |       
+  __ _  _   _ | |_   ___   ______ | |_ | | _   _ 
+ / _  || | | || __| / _ \\ |______||  _|| || | | |
+| (_| || |_| || |_ | (_) |        | |  | || |_| |
+ \\__,_| \\__,_| \\__| \\___/         |_|  |_| \\__, |
+                                            __/ |
+                                           |___/ `;
+Logger.info(chalk.green(simpleLogo));
 if (argv.h || argv.help) {
   console.log([
     'usage: auto-fly [path] [options]',
