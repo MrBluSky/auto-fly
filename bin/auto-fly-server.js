@@ -13,7 +13,7 @@ const os         = require('os'),
 const ifaces = os.networkInterfaces();
 const { Logger } = utils;
 const { version } = packages;
-Logger.logo();
+//Logger.logo();
 
 commander
   .option('-p, --port [port]', '指定服务启动端口，默认为[8080]')

@@ -8,7 +8,7 @@ const commander = require('commander'),
     
 const { Logger } = utils;
 const { name, version } = packages;
-Logger.logo();
+//Logger.logo();
 commander
   .option('-f, --file [file]', '压缩js或css文件')
   .parse(process.argv);

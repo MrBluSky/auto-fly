@@ -12,7 +12,7 @@ const commander = require('commander'),
 const { Logger } = utils;
 const { name, version } = packages;
 const dest = process.cwd();
-Logger.logo();
+//Logger.logo();
 Logger.info(chalk.yellow('开始创建app'));
 const spinner = ora(chalk.cyan('创建中...')).start();
 
