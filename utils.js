@@ -2,6 +2,16 @@ const chalk = require('chalk');
 const config = require('./config');
 const { isDebug } = config;
 
+const simpleLogo = `
+               _                    __  _
+              | |                  / _|| |       
+  __ _  _   _ | |_   ___   ______ | |_ | | _   _ 
+ / _  || | | || __| / _ \\ |______||  _|| || | | |
+| (_| || |_| || |_ | (_) |        | |  | || |_| |
+ \\__,_| \\__,_| \\__| \\___/         |_|  |_| \\__, |
+                                            __/ |
+                                           |___/ `;
+
 var Logger = {
   info: isDebug && console.log,
   error: function(args){
@@ -20,6 +30,9 @@ var Logger = {
     } else {
       Logger.info('[%s] "%s %s" "%s"', date, req.method, req.url, req.headers['user-agent']);
     }
+  },
+  logo: function(){
+    Logger.info(chalk.green(simpleLogo));
   }
 };
 

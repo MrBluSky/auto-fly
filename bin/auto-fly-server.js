@@ -13,9 +13,23 @@ const os         = require('os'),
 const ifaces = os.networkInterfaces();
 const { Logger } = utils;
 const { version } = packages;
+Logger.logo();
+
+commander
+  .option('-p, --port [port]', '指定服务启动端口，默认为[8080]')
+  .option('-P, --proxy [url]', '开启代理服务')
+  .option('-d, --debug', '是否禁止输出log信息在控制台，默认false')
+  .option('-w, --watch', '页面加载性能分析／webpack构建性能分析')
+  .option('--pack', '开启抓包')
+  .option('-o, --open', '在服务启动之后，打开浏览器窗口，默认为true')
+  .option('--cors', '配置Access-Control-Allow-Origin头部信息')
+  .option('-g, --gzip', '启动服务器gzip配置项')
+  .option('-c, --cache', '缓存相关配置')
+  .parse(process.argv);
+
 const port = commander.port || parseInt(process.env.PORT, 10),
-    host = '0.0.0.0',
-    proxy = commander.proxy;
+      host = '0.0.0.0',
+     proxy = commander.proxy;
 let logger;
 
 if (commander.debug) {
@@ -75,10 +89,10 @@ function listen(port) {
     }
 
     logger.info('Hit CTRL-C to stop the server');
-    if (commander.o) {
+    if (commander.open) {
       opener(
         protocol + canonicalHost + ':' + port,
-        { command: argv.o !== true ? argv.o : null }
+        { command: commander.open !== true ? commander.open : null }
       );
     }
   });
