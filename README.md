@@ -8,6 +8,8 @@
 #### 1. 全局安装
 ```
 npm install auto-fly -g
+或
+npm install auto-fly -g --registry http://registry.cnpmjs.org
 ```
 
 #### 2. 使用
